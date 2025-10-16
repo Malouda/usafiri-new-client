@@ -2,9 +2,9 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { MetricCard } from "@/components/MetricCard";
 import { TransactionChart } from "@/components/TransactionChart";
 import { RevenueChart } from "@/components/RevenueChart";
-import { TopMerchants } from "@/components/TopMerchants";
-import { CurrentBalance } from "@/components/CurrentBalance";
-import { PlannedPayouts } from "@/components/PlannedPayouts";
+import { TopSellingProducts } from "@/components/TopSellingProducts";
+import { StockSummary } from "@/components/StockSummary";
+import { RecentSales } from "@/components/RecentSales";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Search, Plus, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,76 +52,76 @@ const Index = () => {
           </header>
           
           {/* Main Content */}
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-4 bg-background">
             {/* Tabs */}
-            <Tabs defaultValue="overview" className="mb-6">
-              <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0">
+            <Tabs defaultValue="today" className="mb-4">
+              <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0">
                 <TabsTrigger 
-                  value="overview" 
+                  value="today" 
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent text-xs"
                 >
-                  Overview
+                  Today
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="merchants" 
+                  value="week" 
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent text-xs"
                 >
-                  Merchants
+                  This Week
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="transactions" 
+                  value="month" 
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent text-xs"
                 >
-                  Transactions
+                  This Month
                 </TabsTrigger>
                 <TabsTrigger 
-                  value="finances" 
+                  value="year" 
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent text-xs"
                 >
-                  Finances
+                  This Year
                 </TabsTrigger>
               </TabsList>
             </Tabs>
             
             {/* Metrics Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <MetricCard 
-                title="Revenue Growth"
-                value="€12,220.64"
-                change="+22.2%"
+                title="Total Sales Today"
+                value="2.8M TZS"
+                change="+18.2%"
                 isPositive={true}
               />
               <MetricCard 
-                title="Rolling Balance"
-                value="€52,340.64"
-                change="+22.2%"
+                title="Products in Stock"
+                value="248"
+                change="+12"
                 isPositive={true}
               />
               <MetricCard 
-                title="Fees Earned"
-                value="€13,000.0"
-                change="-12.2%"
+                title="Low Stock Alerts"
+                value="8"
+                change="+3"
                 isPositive={false}
               />
               <MetricCard 
-                title="Chargeback Rate"
-                value="€27,650.00"
-                change="+22.2%"
+                title="Total Revenue (Month)"
+                value="45.2M TZS"
+                change="+23.8%"
                 isPositive={true}
               />
             </div>
             
             {/* Charts Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
               <TransactionChart />
               <RevenueChart />
             </div>
             
             {/* Bottom Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <PlannedPayouts />
-              <TopMerchants />
-              <CurrentBalance />
+              <RecentSales />
+              <TopSellingProducts />
+              <StockSummary />
             </div>
           </main>
         </div>
