@@ -1,4 +1,4 @@
-import { Home, DollarSign, Globe, Settings, BarChart3, FileText, CreditCard, Store, SettingsIcon } from "lucide-react";
+import { Home, Package, Warehouse, ShoppingCart, Users, CreditCard, BarChart3, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -13,14 +13,13 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/", icon: Home },
-  { title: "Finances", url: "/finances", icon: DollarSign },
-  { title: "Platforms", url: "/platforms", icon: Globe },
-  { title: "Configuration & fees", url: "/configuration", icon: Settings },
-  { title: "Analytics", url: "/analytics", icon: BarChart3 },
-  { title: "Statements", url: "/statements", icon: FileText },
-  { title: "Billing", url: "/billing", icon: CreditCard },
-  { title: "Merchants", url: "/merchants", icon: Store },
-  { title: "Settings", url: "/settings", icon: SettingsIcon },
+  { title: "Products", url: "/products", icon: Package },
+  { title: "Inventory", url: "/inventory", icon: Warehouse },
+  { title: "POS", url: "/pos", icon: ShoppingCart },
+  { title: "Suppliers", url: "/suppliers", icon: Users },
+  { title: "Payments", url: "/payments", icon: CreditCard },
+  { title: "Reports", url: "/reports", icon: BarChart3 },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
