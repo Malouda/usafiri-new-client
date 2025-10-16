@@ -28,8 +28,8 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(var(--danger))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -38,6 +38,14 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          light: "hsl(var(--success-light))",
+        },
+        danger: {
+          DEFAULT: "hsl(var(--danger))",
+          light: "hsl(var(--danger-light))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
