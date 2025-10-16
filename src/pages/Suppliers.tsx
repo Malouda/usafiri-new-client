@@ -1,4 +1,4 @@
-import { Plus, Search, Phone, Mail } from "lucide-react";
+import { Plus, Search, Phone, Mail, Edit, Trash2, Eye, FileText } from "lucide-react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MetricCard } from "@/components/MetricCard";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Suppliers() {
   const suppliers = [
@@ -42,10 +45,69 @@ export default function Suppliers() {
                   <Input placeholder="Search suppliers..." className="pl-7 h-8 text-xs border-gray-200" />
                 </div>
               </div>
-              <Button size="sm" className="h-8 text-xs">
-                <Plus className="h-3 w-3 mr-1" />
-                Add Supplier
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 text-xs border-gray-200">
+                  <FileText className="h-3 w-3 mr-1" />
+                  Purchase Orders
+                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button size="sm" className="h-8 text-xs">
+                      <Plus className="h-3 w-3 mr-1" />
+                      Add Supplier
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-xs font-semibold">Add New Supplier</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="code" className="text-xs text-gray-600">Supplier Code</Label>
+                          <Input id="code" placeholder="SUP001" className="h-8 text-xs border-gray-200" />
+                        </div>
+                        <div>
+                          <Label htmlFor="name" className="text-xs text-gray-600">Supplier Name</Label>
+                          <Input id="name" placeholder="Coca Cola Kwanza Ltd" className="h-8 text-xs border-gray-200" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="contact" className="text-xs text-gray-600">Contact Person</Label>
+                        <Input id="contact" placeholder="John Mwamba" className="h-8 text-xs border-gray-200" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="phone" className="text-xs text-gray-600">Phone Number</Label>
+                          <Input id="phone" placeholder="+255 714 123 456" className="h-8 text-xs border-gray-200" />
+                        </div>
+                        <div>
+                          <Label htmlFor="email" className="text-xs text-gray-600">Email Address</Label>
+                          <Input id="email" placeholder="john@cocacola.co.tz" className="h-8 text-xs border-gray-200" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="address" className="text-xs text-gray-600">Address</Label>
+                        <Textarea id="address" placeholder="Supplier address..." className="text-xs border-gray-200" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="creditLimit" className="text-xs text-gray-600">Credit Limit (TZS)</Label>
+                          <Input id="creditLimit" placeholder="10,000,000" className="h-8 text-xs border-gray-200" />
+                        </div>
+                        <div>
+                          <Label htmlFor="paymentTerms" className="text-xs text-gray-600">Payment Terms</Label>
+                          <Input id="paymentTerms" placeholder="30 days" className="h-8 text-xs border-gray-200" />
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="outline" className="h-8 text-xs border-gray-200">Cancel</Button>
+                        <Button className="h-8 text-xs">Add Supplier</Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             <Card className="border-gray-200">
@@ -85,7 +147,109 @@ export default function Suppliers() {
                           <Badge className="bg-success text-white text-xs">{supplier.status}</Badge>
                         </td>
                         <td className="px-4 py-3 text-xs text-right">
-                          <Button variant="ghost" size="sm" className="h-6 text-xs">View</Button>
+                          <div className="flex items-center gap-1 justify-end">
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <Eye className="h-3 w-3" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-md">
+                                <DialogHeader>
+                                  <DialogTitle className="text-xs font-semibold">Supplier Details</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-3">
+                                  <div>
+                                    <div className="text-sm font-medium text-foreground">{supplier.name}</div>
+                                    <div className="text-xs text-gray-600">{supplier.code}</div>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4 text-xs">
+                                    <div>
+                                      <span className="text-gray-600">Contact Person:</span>
+                                      <div className="font-medium">{supplier.contact}</div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">Phone:</span>
+                                      <div className="font-medium">{supplier.phone}</div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">Email:</span>
+                                      <div className="font-medium">{supplier.email}</div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">Balance:</span>
+                                      <div className="font-medium">{supplier.balance} TZS</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                            
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <Edit className="h-3 w-3" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-md">
+                                <DialogHeader>
+                                  <DialogTitle className="text-xs font-semibold">Edit Supplier</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label htmlFor="edit-code" className="text-xs text-gray-600">Supplier Code</Label>
+                                      <Input id="edit-code" defaultValue={supplier.code} className="h-8 text-xs border-gray-200" />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="edit-name" className="text-xs text-gray-600">Supplier Name</Label>
+                                      <Input id="edit-name" defaultValue={supplier.name} className="h-8 text-xs border-gray-200" />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <Label htmlFor="edit-contact" className="text-xs text-gray-600">Contact Person</Label>
+                                    <Input id="edit-contact" defaultValue={supplier.contact} className="h-8 text-xs border-gray-200" />
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label htmlFor="edit-phone" className="text-xs text-gray-600">Phone Number</Label>
+                                      <Input id="edit-phone" defaultValue={supplier.phone} className="h-8 text-xs border-gray-200" />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="edit-email" className="text-xs text-gray-600">Email Address</Label>
+                                      <Input id="edit-email" defaultValue={supplier.email} className="h-8 text-xs border-gray-200" />
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-end gap-2">
+                                    <Button variant="outline" className="h-8 text-xs border-gray-200">Cancel</Button>
+                                    <Button className="h-8 text-xs">Update Supplier</Button>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                            
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-danger hover:text-danger">
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-md">
+                                <DialogHeader>
+                                  <DialogTitle className="text-xs font-semibold">Delete Supplier</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4">
+                                  <p className="text-xs text-gray-600">
+                                    Are you sure you want to delete <strong>{supplier.name}</strong>? This action cannot be undone.
+                                  </p>
+                                  <div className="flex justify-end gap-2">
+                                    <Button variant="outline" className="h-8 text-xs border-gray-200">Cancel</Button>
+                                    <Button variant="destructive" className="h-8 text-xs">Delete Supplier</Button>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                         </td>
                       </tr>
                     ))}

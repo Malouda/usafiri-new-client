@@ -1,10 +1,13 @@
-import { Search, Trash2, ShoppingCart } from "lucide-react";
+import { Search, Trash2, ShoppingCart, Plus, Minus, CreditCard, Banknote, Smartphone } from "lucide-react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function POS() {
   const cartItems = [
@@ -84,7 +87,16 @@ export default function POS() {
                               </Button>
                             </div>
                             <div className="flex items-center justify-between text-xs">
-                              <div className="text-gray-600">Qty: {item.qty} × {item.price.toLocaleString()}</div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="outline" size="sm" className="h-5 w-5 p-0 border-gray-200">
+                                  <Minus className="h-3 w-3" />
+                                </Button>
+                                <span className="text-gray-600 min-w-[20px] text-center">{item.qty}</span>
+                                <Button variant="outline" size="sm" className="h-5 w-5 p-0 border-gray-200">
+                                  <Plus className="h-3 w-3" />
+                                </Button>
+                                <span className="text-gray-600 ml-2">× {item.price.toLocaleString()}</span>
+                              </div>
                               <div className="font-semibold text-foreground">{item.total.toLocaleString()} TZS</div>
                             </div>
                           </div>
@@ -106,7 +118,44 @@ export default function POS() {
                       <span>Total</span>
                       <span>{total.toLocaleString()} TZS</span>
                     </div>
-                    <Button className="w-full h-9 text-xs mt-2">Complete Sale</Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="w-full h-9 text-xs mt-2">Complete Sale</Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                          <DialogTitle className="text-xs font-semibold">Payment Method</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-2">
+                            <Button variant="outline" className="h-12 text-xs border-gray-200">
+                              <Banknote className="h-4 w-4 mr-2" />
+                              Cash
+                            </Button>
+                            <Button variant="outline" className="h-12 text-xs border-gray-200">
+                              <Smartphone className="h-4 w-4 mr-2" />
+                              M-Pesa
+                            </Button>
+                            <Button variant="outline" className="h-12 text-xs border-gray-200">
+                              <CreditCard className="h-4 w-4 mr-2" />
+                              Card
+                            </Button>
+                            <Button variant="outline" className="h-12 text-xs border-gray-200">
+                              <Banknote className="h-4 w-4 mr-2" />
+                              Bank Transfer
+                            </Button>
+                          </div>
+                          <div>
+                            <Label htmlFor="amount" className="text-xs text-gray-600">Amount Received</Label>
+                            <Input id="amount" placeholder="0" className="h-8 text-xs border-gray-200" />
+                          </div>
+                          <div className="flex justify-end gap-2">
+                            <Button variant="outline" className="h-8 text-xs border-gray-200">Cancel</Button>
+                            <Button className="h-8 text-xs">Process Payment</Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                     <Button variant="outline" className="w-full h-9 text-xs border-gray-200">Clear Cart</Button>
                   </div>
                 </Card>

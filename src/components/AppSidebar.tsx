@@ -1,4 +1,4 @@
-import { Home, Package, Warehouse, ShoppingCart, Users, CreditCard, BarChart3, Settings, Wifi } from "lucide-react";
+import { Home, Package, Warehouse, ShoppingCart, Users, CreditCard, BarChart3, Settings, Wifi, FolderOpen, FileText, Key, Calculator, Smartphone, Bell, Building2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -14,9 +14,17 @@ import {
 const items = [
   { title: "Dashboard", url: "/", icon: Home },
   { title: "Products", url: "/products", icon: Package },
+  { title: "Categories", url: "/categories", icon: FolderOpen },
   { title: "Inventory", url: "/inventory", icon: Warehouse },
   { title: "POS", url: "/pos", icon: ShoppingCart },
   { title: "Suppliers", url: "/suppliers", icon: Users },
+  { title: "Purchase Orders", url: "/purchase-orders", icon: FileText },
+  { title: "Users", url: "/users", icon: Users },
+  { title: "API Keys", url: "/api-keys", icon: Key },
+  { title: "Tariffs", url: "/tariffs", icon: Calculator },
+  { title: "Phone Networks", url: "/phone-networks", icon: Smartphone },
+  { title: "Notifications", url: "/notifications", icon: Bell },
+  { title: "Business Registration", url: "/business-registration", icon: Building2 },
   { title: "Payments", url: "/payments", icon: CreditCard },
   { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Network Config", url: "/network-config", icon: Wifi },

@@ -1,4 +1,4 @@
-import { Plus, Search, TrendingDown, AlertTriangle } from "lucide-react";
+import { Plus, Search, TrendingDown, AlertTriangle, Edit, Eye, Package } from "lucide-react";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MetricCard } from "@/components/MetricCard";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Inventory() {
   const inventory = [
@@ -43,10 +46,67 @@ export default function Inventory() {
                   <Input placeholder="Search inventory..." className="pl-7 h-8 text-xs border-gray-200" />
                 </div>
               </div>
-              <Button size="sm" className="h-8 text-xs">
-                <Plus className="h-3 w-3 mr-1" />
-                Stock Adjustment
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 text-xs border-gray-200">
+                  <Package className="h-3 w-3 mr-1" />
+                  Receive Stock
+                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button size="sm" className="h-8 text-xs">
+                      <Plus className="h-3 w-3 mr-1" />
+                      Stock Adjustment
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-xs font-semibold">Stock Adjustment</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="product" className="text-xs text-gray-600">Product</Label>
+                        <Select>
+                          <SelectTrigger className="h-8 text-xs border-gray-200">
+                            <SelectValue placeholder="Select product" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="coca-cola" className="text-xs">Coca Cola 500ml</SelectItem>
+                            <SelectItem value="bread" className="text-xs">Bread Loaf</SelectItem>
+                            <SelectItem value="rice" className="text-xs">Rice 1kg</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="adjustmentType" className="text-xs text-gray-600">Adjustment Type</Label>
+                          <Select>
+                            <SelectTrigger className="h-8 text-xs border-gray-200">
+                              <SelectValue placeholder="Select type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="addition" className="text-xs">Stock Addition</SelectItem>
+                              <SelectItem value="deduction" className="text-xs">Stock Deduction</SelectItem>
+                              <SelectItem value="adjustment" className="text-xs">Stock Adjustment</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="quantity" className="text-xs text-gray-600">Quantity</Label>
+                          <Input id="quantity" placeholder="0" className="h-8 text-xs border-gray-200" />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="reason" className="text-xs text-gray-600">Reason</Label>
+                        <Input id="reason" placeholder="Stock adjustment reason..." className="h-8 text-xs border-gray-200" />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="outline" className="h-8 text-xs border-gray-200">Cancel</Button>
+                        <Button className="h-8 text-xs">Apply Adjustment</Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
             <Card className="border-gray-200">
@@ -81,7 +141,14 @@ export default function Inventory() {
                           </Badge>}
                         </td>
                         <td className="px-4 py-3 text-xs text-right">
-                          <Button variant="ghost" size="sm" className="h-6 text-xs">Adjust</Button>
+                          <div className="flex items-center gap-1 justify-end">
+                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <Eye className="h-3 w-3" />
+                            </Button>
+                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
