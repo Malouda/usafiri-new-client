@@ -9,11 +9,11 @@ import { MetricCard } from "@/components/MetricCard";
 
 export default function Payments() {
   const payments = [
-    { id: 1, txnId: "TXN001234", customer: "John Doe", amount: "45,800", method: "M-Pesa", status: "Completed", date: "2025-10-16 09:23", type: "Sale" },
-    { id: 2, txnId: "TXN001235", customer: "Jane Smith", amount: "128,500", method: "Cash", status: "Completed", date: "2025-10-16 10:15", type: "Sale" },
-    { id: 3, txnId: "TXN001236", customer: "Hassan Ali", amount: "67,200", method: "Bank Transfer", status: "Pending", date: "2025-10-16 11:42", type: "Sale" },
-    { id: 4, txnId: "TXN001237", customer: "Mary Kimaro", amount: "32,900", method: "Card", status: "Completed", date: "2025-10-16 12:08", type: "Sale" },
-    { id: 5, txnId: "TXN001238", customer: "Grace Mollel", amount: "15,600", method: "M-Pesa", status: "Failed", date: "2025-10-16 13:35", type: "Sale" },
+    { id: 1, txnId: "TXN001234", customer: "John Doe", phone: "+255 714 123 456", network: "Vodacom (M-Pesa)", amount: "45,000", tariff: "800", total: "45,800", method: "M-Pesa", status: "Completed", date: "2025-10-16 09:23" },
+    { id: 2, txnId: "TXN001235", customer: "Jane Smith", phone: "-", network: "-", amount: "128,500", tariff: "0", total: "128,500", method: "Cash", status: "Completed", date: "2025-10-16 10:15" },
+    { id: 3, txnId: "TXN001236", customer: "Hassan Ali", phone: "+255 689 234 567", network: "Airtel (Airtel Money)", amount: "67,200", tariff: "0", total: "67,200", method: "Bank Transfer", status: "Pending", date: "2025-10-16 11:42" },
+    { id: 4, txnId: "TXN001237", customer: "Mary Kimaro", phone: "-", network: "-", amount: "32,900", tariff: "0", total: "32,900", method: "Card", status: "Completed", date: "2025-10-16 12:08" },
+    { id: 5, txnId: "TXN001238", customer: "Grace Mollel", phone: "+255 765 789 012", network: "Vodacom (M-Pesa)", amount: "15,600", tariff: "0", total: "15,600", method: "M-Pesa", status: "Failed", date: "2025-10-16 13:35" },
   ];
 
   return (
@@ -56,7 +56,10 @@ export default function Payments() {
                     <tr>
                       <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Transaction ID</th>
                       <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Customer</th>
-                      <th className="text-right px-4 py-2 text-xs font-medium text-gray-600">Amount (TZS)</th>
+                      <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Phone / Network</th>
+                      <th className="text-right px-4 py-2 text-xs font-medium text-gray-600">Amount</th>
+                      <th className="text-right px-4 py-2 text-xs font-medium text-gray-600">Tariff</th>
+                      <th className="text-right px-4 py-2 text-xs font-medium text-gray-600">Total (TZS)</th>
                       <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Method</th>
                       <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Date & Time</th>
                       <th className="text-left px-4 py-2 text-xs font-medium text-gray-600">Status</th>
@@ -68,7 +71,17 @@ export default function Payments() {
                       <tr key={payment.id} className="border-b border-gray-200 hover:bg-gray-50">
                         <td className="px-4 py-3 text-xs text-gray-600">{payment.txnId}</td>
                         <td className="px-4 py-3 text-xs text-foreground font-medium">{payment.customer}</td>
-                        <td className="px-4 py-3 text-xs text-foreground text-right font-medium">{payment.amount}</td>
+                        <td className="px-4 py-3 text-xs text-gray-600">
+                          <div className="flex flex-col gap-0.5">
+                            <span>{payment.phone}</span>
+                            {payment.network !== "-" && (
+                              <span className="text-xs text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded w-fit">{payment.network}</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-600 text-right">{payment.amount}</td>
+                        <td className="px-4 py-3 text-xs text-gray-600 text-right">{payment.tariff}</td>
+                        <td className="px-4 py-3 text-xs text-foreground text-right font-medium">{payment.total}</td>
                         <td className="px-4 py-3 text-xs text-gray-600">{payment.method}</td>
                         <td className="px-4 py-3 text-xs text-gray-600">{payment.date}</td>
                         <td className="px-4 py-3 text-xs">

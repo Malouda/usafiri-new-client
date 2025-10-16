@@ -10,6 +10,7 @@ import POS from "./pages/POS";
 import Suppliers from "./pages/Suppliers";
 import Payments from "./pages/Payments";
 import Reports from "./pages/Reports";
+import NetworkConfig from "./pages/NetworkConfig";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/payments" element={<Payments />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/network-config" element={<NetworkConfig />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

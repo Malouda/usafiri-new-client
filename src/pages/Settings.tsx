@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Settings() {
@@ -103,18 +104,36 @@ export default function Settings() {
 
               <TabsContent value="tariff">
                 <Card className="p-4 border-gray-200">
-                  <div className="flex items-center gap-2 mb-4">
-                    <DollarSign className="h-4 w-4 text-gray-600" />
-                    <h3 className="text-xs font-semibold text-foreground">Tariff Configuration</h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-gray-600" />
+                      <h3 className="text-xs font-semibold text-foreground">Tariff Configuration</h3>
+                    </div>
+                    <Button size="sm" className="h-8 text-xs">Add Tariff</Button>
                   </div>
+                  
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                    <h4 className="text-xs font-medium text-foreground mb-2">Tariff Calculation Example</h4>
+                    <div className="space-y-1 text-xs text-gray-600">
+                      <div>Product cost: <span className="font-medium text-foreground">2,000 TZS</span></div>
+                      <div>Applicable tariff range: <span className="font-medium text-foreground">0 - 3,000</span></div>
+                      <div>Tariff fee: <span className="font-medium text-foreground">700 TZS</span></div>
+                      <div className="pt-1 border-t border-blue-200">
+                        Total payment: <span className="font-semibold text-foreground">2,700 TZS</span> (2,000 + 700)
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
                           <th className="text-left px-3 py-2 text-xs font-medium text-gray-600">Type</th>
-                          <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Min Value</th>
-                          <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Max Value</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Min Value (TZS)</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Max Value (TZS)</th>
                           <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Fee (TZS)</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium text-gray-600">Status</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium text-gray-600">Effective Date</th>
                           <th className="text-right px-3 py-2 text-xs font-medium text-gray-600">Actions</th>
                         </tr>
                       </thead>
@@ -122,8 +141,25 @@ export default function Settings() {
                         <tr className="border-b border-gray-200">
                           <td className="px-3 py-2 text-xs text-gray-600">Collection</td>
                           <td className="px-3 py-2 text-xs text-gray-600 text-right">0</td>
+                          <td className="px-3 py-2 text-xs text-gray-600 text-right">3,000</td>
+                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">700</td>
+                          <td className="px-3 py-2 text-xs">
+                            <Badge className="bg-success text-white text-xs">Active</Badge>
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-600">2025-01-01</td>
+                          <td className="px-3 py-2 text-xs text-right">
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">Edit</Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-gray-200">
+                          <td className="px-3 py-2 text-xs text-gray-600">Collection</td>
+                          <td className="px-3 py-2 text-xs text-gray-600 text-right">3,001</td>
                           <td className="px-3 py-2 text-xs text-gray-600 text-right">10,000</td>
-                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">100</td>
+                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">1,200</td>
+                          <td className="px-3 py-2 text-xs">
+                            <Badge className="bg-success text-white text-xs">Active</Badge>
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-600">2025-01-01</td>
                           <td className="px-3 py-2 text-xs text-right">
                             <Button variant="ghost" size="sm" className="h-6 text-xs">Edit</Button>
                           </td>
@@ -132,7 +168,24 @@ export default function Settings() {
                           <td className="px-3 py-2 text-xs text-gray-600">Collection</td>
                           <td className="px-3 py-2 text-xs text-gray-600 text-right">10,001</td>
                           <td className="px-3 py-2 text-xs text-gray-600 text-right">50,000</td>
-                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">300</td>
+                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">2,500</td>
+                          <td className="px-3 py-2 text-xs">
+                            <Badge className="bg-success text-white text-xs">Active</Badge>
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-600">2025-01-01</td>
+                          <td className="px-3 py-2 text-xs text-right">
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">Edit</Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-gray-200">
+                          <td className="px-3 py-2 text-xs text-gray-600">Disbursement</td>
+                          <td className="px-3 py-2 text-xs text-gray-600 text-right">0</td>
+                          <td className="px-3 py-2 text-xs text-gray-600 text-right">10,000</td>
+                          <td className="px-3 py-2 text-xs text-foreground text-right font-medium">500</td>
+                          <td className="px-3 py-2 text-xs">
+                            <Badge className="bg-success text-white text-xs">Active</Badge>
+                          </td>
+                          <td className="px-3 py-2 text-xs text-gray-600">2025-01-01</td>
                           <td className="px-3 py-2 text-xs text-right">
                             <Button variant="ghost" size="sm" className="h-6 text-xs">Edit</Button>
                           </td>

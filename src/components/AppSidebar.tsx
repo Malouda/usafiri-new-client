@@ -1,4 +1,4 @@
-import { Home, Package, Warehouse, ShoppingCart, Users, CreditCard, BarChart3, Settings } from "lucide-react";
+import { Home, Package, Warehouse, ShoppingCart, Users, CreditCard, BarChart3, Settings, Wifi } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -19,6 +19,7 @@ const items = [
   { title: "Suppliers", url: "/suppliers", icon: Users },
   { title: "Payments", url: "/payments", icon: CreditCard },
   { title: "Reports", url: "/reports", icon: BarChart3 },
+  { title: "Network Config", url: "/network-config", icon: Wifi },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
