@@ -1,0 +1,60 @@
+import { Make } from "../interfaces/make.interface";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Factory, Globe } from "lucide-react";
+
+interface MakeStatsProps {
+  makes: Make[];
+  loading: boolean;
+}
+
+export function MakeStats({ makes, loading }: MakeStatsProps) {
+  const totalMakes = makes.length;
+  const makesWithCountry = makes.filter((m) => m.country).length;
+
+  if (loading) {
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+        {[1, 2].map((i) => (
+          <Card key={i} className="border-gray-200">
+            <CardHeader className="pb-2">
+              <Skeleton className="h-4 w-20" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-16" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+      <Card className="border-gray-200">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xs text-gray-600 flex items-center gap-2">
+            <Factory className="h-4 w-4" />
+            Total Makes
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-gray-900">{totalMakes}</div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-gray-200">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xs text-gray-600 flex items-center gap-2">
+            <Globe className="h-4 w-4 text-blue-600" />
+            With Country
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold text-blue-600">{makesWithCountry}</div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+

@@ -1,0 +1,44 @@
+---
+description: Module structure and organization guidelines
+---
+
+# Module Structure
+
+Every feature module MUST follow this exact structure (see [auth module](mdc:src/modules/auth) as reference):
+
+```
+src/modules/[feature]/
+├── __tests__/
+│   ├── [feature].api.test.ts      # API client tests
+│   ├── [feature]Slice.test.ts     # Redux slice tests
+│   └── [Component].test.tsx        # Component tests
+├── interfaces/
+│   ├── [feature].interface.ts     # Type definitions
+│   └── index.ts                    # Export barrel
+├── reducers/
+│   └── [feature]Slice.ts          # Redux slice
+├── hooks/
+│   └── use[Feature].ts            # Custom hooks
+├── components/
+│   └── [Feature]Modal.tsx         # Modal components
+├── pages/
+│   └── [Feature]List.tsx          # Page components
+└── [feature].api.ts               # API client
+```
+
+## Required Files
+1. ✅ `interfaces/[feature].interface.ts` - All types and interfaces
+2. ✅ `[feature].api.ts` - Extends BaseApi
+3. ✅ `reducers/[feature]Slice.ts` - Redux slice with thunks
+4. ✅ `hooks/use[Feature].ts` - Custom hook wrapping Redux
+5. ✅ `pages/[Feature]List.tsx` - Main list page with table
+6. ✅ `components/[Feature]Modal.tsx` - Details/form modal
+7. ✅ `__tests__/` - Tests for ALL above files
+
+## Integration Checklist
+After creating module files:
+- [ ] Register reducer in [src/store/index.ts](mdc:src/store/index.ts)
+- [ ] Add route in [src/routes/index.tsx](mdc:src/routes/index.tsx)
+- [ ] Add sidebar link in [src/modules/layout/AppSidebar.tsx](mdc:src/modules/layout/AppSidebar.tsx)
+- [ ] Write tests for all components
+- [ ] Verify API integration with backend

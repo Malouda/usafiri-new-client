@@ -1,0 +1,489 @@
+# Usafiri Frontend - Development Guidelines
+
+## Project Overview
+Multi-tenant shuttle transport booking platform frontend built with React, TypeScript, Redux Toolkit, and Shadcn/ui.
+
+## Design System & UI Standards
+
+### Typography & Spacing
+- **Font Size**: Use `text-xs` for most text content
+- **Font Color**: Use `text-gray-600` for body text, `text-gray-900` for headings
+- **Border & Lines**: Use `border-gray-200` for all borders and dividers
+- **Design**: Compact, information-dense layouts
+
+### Component Preferences
+- **Lists**: Always use `<Table>` component from Shadcn/ui, never cards or grids
+- **Forms & Details**: Use `<Dialog>` modals, avoid full-page forms
+- **Buttons**: Small size (`size="sm"`), minimal spacing
+- **Layout**: Avoid crowding pages with too many features - one feature per page/section
+
+### Color Palette
+```tsx
+// Primary text: text-gray-900
+// Secondary text: text-gray-600
+// Borders: border-gray-200
+// Backgrounds: bg-white, bg-gray-50
+// Interactive: Use theme colors (primary, destructive, etc.)
+```
+
+## Module Structure
+Follow the auth module pattern exactly:
+
+```
+src/modules/[feature]/
+├── __tests__/
+│   ├── [feature].api.test.ts
+│   ├── [feature]Slice.test.ts
+│   └── [Component].test.tsx
+├── interfaces/
+│   ├── [feature].interface.ts
+│   └── index.ts
+├── reducers/
+│   └── [feature]Slice.ts
+├── hooks/
+│   └── use[Feature].ts
+├── components/
+│   └── [Feature]Modal.tsx
+├── pages/
+│   └── [Feature]List.tsx
+└── [feature].api.ts
+```
+
+## Redux Patterns
+
+### Slice Structure
+```typescript
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+interface FeatureState {
+  items: Item[];
+  selectedItem: Item | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: FeatureState = {
+  items: [],
+  selectedItem: null,
+  loading: false,
+  error: null,
+};
+
+// Async thunks
+export const fetchItems = createAsyncThunk(
+  'feature/fetchItems',
+  async () => await api.getAll()
+);
+
+const featureSlice = createSlice({
+  name: 'feature',
+  initialState,
+  reducers: {
+    setSelectedItem: (state, action) => {
+      state.selectedItem = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchItems.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch';
+      });
+  },
+});
+
+export const { setSelectedItem, clearError } = featureSlice.actions;
+export default featureSlice.reducer;
+```
+
+### Register in Store
+```typescript
+// src/store/index.ts
+import featureReducer from '../modules/feature/reducers/featureSlice';
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    feature: featureReducer, // Add new reducers here
+  },
+});
+```
+
+## API Integration
+
+### API Client Pattern
+```typescript
+import { BaseApi } from "../../api/base.api";
+
+class FeatureApi extends BaseApi {
+  constructor() {
+    super("/endpoint");
+  }
+
+  async getAll(): Promise<Item[]> {
+    return this.get<Item[]>("");
+  }
+
+  async getById(id: string): Promise<Item> {
+    return this.get<Item>(`/${id}`);
+  }
+
+  async create(data: CreateDto): Promise<Item> {
+    return this.post<Item, CreateDto>("", data);
+  }
+
+  async update(id: string, data: UpdateDto): Promise<Item> {
+    return this.put<Item, UpdateDto>(`/${id}`, data);
+  }
+
+  async delete(id: string): Promise<void> {
+    return this.delete<void>(`/${id}`);
+  }
+}
+
+export const featureApi = new FeatureApi();
+```
+
+## Custom Hooks Pattern
+
+```typescript
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../store';
+
+export const useFeature = () => {
+  const dispatch = useAppDispatch();
+  const { items, loading, error } = useAppSelector((state) => state.feature);
+
+  useEffect(() => {
+    dispatch(fetchItems());
+  }, []);
+
+  const refetch = () => {
+    dispatch(fetchItems());
+  };
+
+  return { items, loading, error, refetch };
+};
+```
+
+## Component Patterns
+
+### Table-Based List Page
+```tsx
+import { useFeature } from "../hooks/useFeature";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+export default function FeatureList() {
+  const { items, loading, error } = useFeature();
+
+  if (loading) {
+    return (
+      <div className="p-4 space-y-2">
+        {[1, 2, 3].map((i) => <Skeleton key={i} className="h-8" />)}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4">
+        <Alert variant="destructive">
+          <AlertDescription className="text-xs">{error}</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-lg font-semibold text-gray-900">Feature List</h1>
+        <Button size="sm">Add New</Button>
+      </div>
+      
+      <div className="border border-gray-200 rounded-md">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-gray-50">
+              <TableHead className="text-xs text-gray-600">Column 1</TableHead>
+              <TableHead className="text-xs text-gray-600">Column 2</TableHead>
+              <TableHead className="text-xs text-gray-600 text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item.id} className="border-gray-200">
+                <TableCell className="text-xs text-gray-600">{item.name}</TableCell>
+                <TableCell className="text-xs text-gray-600">{item.value}</TableCell>
+                <TableCell className="text-right">
+                  <Button variant="ghost" size="sm">View</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+```
+
+### Modal Dialog Pattern
+```tsx
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+
+interface FeatureModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  item: Item | null;
+}
+
+export function FeatureModal({ open, onOpenChange, item }: FeatureModalProps) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle className="text-lg text-gray-900">Feature Details</DialogTitle>
+          <DialogDescription className="text-xs text-gray-600">
+            View and edit feature information
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="space-y-3">
+          {/* Content with text-xs and text-gray-600 */}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## Testing Requirements
+
+### All modules MUST have tests for:
+1. API client methods
+2. Redux slice (actions, reducers, thunks)
+3. Custom hooks
+4. Page components
+5. Modal components
+
+### Test File Pattern
+```typescript
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderHook, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+
+describe('Feature Module', () => {
+  describe('API', () => {
+    it('should fetch items', async () => {
+      // Test implementation
+    });
+  });
+
+  describe('Redux Slice', () => {
+    it('should handle fetchItems.fulfilled', () => {
+      // Test implementation
+    });
+  });
+
+  describe('useFeature Hook', () => {
+    it('should fetch items on mount', async () => {
+      // Test implementation
+    });
+  });
+});
+```
+
+## Navigation & Routing
+
+### Adding New Features
+
+**1. Add route in `src/routes/index.tsx`:**
+```typescript
+import FeatureList from "../modules/feature/pages/FeatureList";
+
+export const adminRoutes: RoutesProps[] = [
+  {
+    path: "/features",
+    name: "Features",
+    breadcrumb: [{ label: "Features", path: "/features" }],
+    element: <FeatureList />,
+    roles: [], // or specific roles
+    requiresAuth: true,
+  },
+];
+```
+
+**2. Add sidebar link in `src/modules/layout/AppSidebar.tsx`:**
+```typescript
+import { IconName } from "lucide-react";
+
+const items = [
+  { 
+    title: "Feature Name", 
+    url: "/features", 
+    icon: IconName, 
+    roles: [] // or ["admin", "rider"]
+  },
+];
+```
+
+## Type Safety
+
+### Always define interfaces
+```typescript
+// Good
+interface CreateFeatureRequest {
+  name: string;
+  value: number;
+}
+
+// Bad
+const createFeature = (data: any) => { ... }
+```
+
+### Use enums from backend
+```typescript
+export enum Status {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
+}
+```
+
+## Error Handling
+
+### API Errors
+```typescript
+try {
+  const result = await featureApi.create(data);
+  toast.success("Created successfully");
+  return result;
+} catch (error) {
+  const message = error instanceof Error ? error.message : 'Failed to create';
+  toast.error(message);
+  throw error;
+}
+```
+
+### Redux Error State
+```typescript
+// Always clear errors when retrying
+dispatch(clearError());
+dispatch(fetchItems());
+```
+
+## Code Style
+
+### Import Order
+1. React imports
+2. Third-party libraries
+3. Shadcn/ui components
+4. Local imports (hooks, utils, types)
+
+### Component Order
+1. Interfaces/Types
+2. Component definition
+3. Hooks
+4. Event handlers
+5. Conditional renders
+6. Main JSX return
+
+## Performance
+
+### Memoization
+- Use `useMemo` for expensive calculations
+- Use `useCallback` for event handlers passed to children
+- Avoid unnecessary re-renders with `React.memo`
+
+### Code Splitting
+- Use lazy loading for route components
+- Keep bundle sizes small
+
+## Accessibility
+
+### Always include:
+- ARIA labels for interactive elements
+- Keyboard navigation support
+- Focus management in modals
+- Screen reader text where needed
+
+## Backend Integration
+
+### API Base URL
+- Dev: `http://localhost:3000`
+- JWT tokens in Authorization header
+- Handle 401 (redirect to login)
+- Handle 403 (show error)
+
+### WebSocket (for tracking)
+```typescript
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000/tracking', {
+  auth: {
+    token: getAuthToken(),
+  }
+});
+```
+
+## Git Workflow
+
+### Commit Messages
+```
+feat(trips): add trip list page with filters
+fix(auth): resolve token refresh issue
+test(wallet): add wallet slice tests
+docs: update README with setup instructions
+```
+
+### Branch Naming
+- `feature/trip-list`
+- `fix/auth-token`
+- `test/reservation-flow`
+
+## Common Pitfalls to Avoid
+
+❌ Don't use card layouts for lists
+❌ Don't create full-page forms
+❌ Don't use large fonts (stick to text-xs)
+❌ Don't skip tests
+❌ Don't forget to register Redux slices
+❌ Don't forget to add routes and sidebar links
+❌ Don't use colors outside the gray palette for text/borders
+
+✅ Do use tables for all lists
+✅ Do use modals for forms and details
+✅ Do use compact spacing
+✅ Do write comprehensive tests
+✅ Do follow the auth module structure
+✅ Do use TypeScript strictly
+✅ Do handle loading and error states
+

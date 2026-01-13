@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+---
+
+# Design System Rules
+
+## Typography
+- **ALL text content** must use `text-xs` class
+- **ALL body text** must use `text-gray-600` color
+- **Headings only** use `text-gray-900` color
+- No exceptions to font sizes unless explicitly approved
+
+## Colors
+- Text: `text-gray-600` (body), `text-gray-900` (headings)
+- Borders: `border-gray-200` - use this for ALL borders
+- Backgrounds: `bg-white`, `bg-gray-50` (table headers)
+- Interactive elements: Use Shadcn theme colors only
+
+## Component Selection
+- **Lists**: ALWAYS use `<Table>` component, NEVER cards or grids
+- **Forms**: ALWAYS use `<Dialog>` modals, NEVER full-page forms
+- **Details View**: ALWAYS use `<Dialog>` modals
+- **Buttons**: ALWAYS use `size="sm"` prop
+
+## Layout Principles
+- Compact spacing - minimize whitespace
+- One feature per page/section
+- Avoid crowding with multiple features
+- Information-dense but organized
+
+## Example Table Structure
+```tsx
+<div className="border border-gray-200 rounded-md">
+  <Table>
+    <TableHeader>
+      <TableRow className="bg-gray-50">
+        <TableHead className="text-xs text-gray-600">Header</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow className="border-gray-200">
+        <TableCell className="text-xs text-gray-600">Content</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+```

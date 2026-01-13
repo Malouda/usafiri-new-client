@@ -1,0 +1,90 @@
+---
+globs: **/__tests__/**,*.test.ts,*.test.tsx
+---
+
+# Testing Requirements
+
+## Mandatory Tests
+Every feature module MUST have tests for:
+
+1. ✅ API Client (`[feature].api.test.ts`)
+   - Test all API methods
+   - Mock axios responses
+   - Test error handling
+
+2. ✅ Redux Slice (`[feature]Slice.test.ts`)
+   - Test initial state
+   - Test reducers
+   - Test async thunks (pending, fulfilled, rejected)
+
+3. ✅ Custom Hooks (`use[Feature].test.ts`)
+   - Test hook behavior
+   - Test Redux integration
+   - Test side effects
+
+4. ✅ Components (`[Component].test.tsx`)
+   - Test rendering
+   - Test user interactions
+   - Test loading states
+   - Test error states
+
+## Test File Template
+
+```typescript
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderHook, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import featureReducer from '../reducers/featureSlice';
+
+// Mock setup
+vi.mock('../feature.api', () => ({
+  featureApi: {
+    getAll: vi.fn(),
+    getById: vi.fn(),
+  },
+}));
+
+describe('Feature Module', () => {
+  let store: any;
+
+  beforeEach(() => {
+    store = configureStore({
+      reducer: { feature: featureReducer },
+    });
+    vi.clearAllMocks();
+  });
+
+  describe('API Tests', () => {
+    it('should fetch items successfully', async () => {
+      // Test implementation
+    });
+  });
+
+  describe('Slice Tests', () => {
+    it('should handle initial state', () => {
+      const state = featureReducer(undefined, { type: '' });
+      expect(state.items).toEqual([]);
+      expect(state.loading).toBe(false);
+    });
+  });
+
+  describe('Hook Tests', () => {
+    it('should fetch items on mount', async () => {
+      // Test implementation
+    });
+  });
+});
+```
+
+## Running Tests
+```bash
+npm run test              # Run all tests
+npm run test:watch        # Watch mode
+npm run test:coverage     # With coverage
+```
+
+## Coverage Requirements
+- Aim for 80%+ code coverage
+- All critical paths must be tested
+- See [auth module tests](mdc:src/modules/auth/__tests__) for examples
